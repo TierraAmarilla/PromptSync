@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PromptSync - Gestor de Prompts para IA</title>
+  <meta name="description" content="Gestor de prompts para IA con interfaz web. Organiza, edita y copia prompts para ChatGPT, Claude, Gemini y más.">
+  <meta name="keywords" content="prompts, IA, ChatGPT, Claude, Gemini, gestor, organizador">
+  <meta property="og:title" content="PromptSync - Gestor de Prompts para IA">
+  <meta property="og:description" content="Organiza y gestiona tus prompts de IA de forma eficiente">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="quill.snow.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="sidebar">
+  <div class="header">
+    <h2>PromptSync</h2>
+    <button id="open-config" title="Configuración">⚙️</button>
+    <!-- Botón de cerrar barra eliminado -->
+  </div>
+
+  <div class="filter-container">
+    <input type="text" id="search-input" placeholder="Filtrar prompts...">
+    <select id="folder-filter">
+      <option value="">Todas las carpetas</option>
+    </select>
+    <!-- Div para contener select y botón de URL -->
+    <div style="display: flex; align-items: center; gap: 5px;">
+      <select id="variant-filter" style="flex: 1;">
+        <option value="">Todas las variantes</option>
+      </select>
+      <button id="open-variant-url" class="btn-icon" title="Abrir sitio web de la variante" style="display: none;">🌐</button>
+    </div>
+    <!-- Texto fijo "Prompts" y botón [+] -->
+    <div style="display: flex; align-items: center; justify-content: space-between;">
+      <span>Prompts</span>
+      <button id="add-prompt-btn" class="btn-sm">[+]</button>
+    </div>
+  </div>
+
+  <div class="prompt-list" id="prompt-list"></div>
+</div>
+
+<div id="config-modal" class="modal" style="display: none;">
+  <div class="modal-content-full">
+    <div class="modal-header">
+      <h4 class="modal-title">Configuración</h4>
+      <button id="close-config-modal">&times;</button>
+    </div>
+    <div id="config-body">
+      <div class="form-group">
+        <label for="theme-select">Tema</label>
+        <select id="theme-select">
+          <option value="auto">Automático (Sistema)</option>
+          <option value="light">Claro</option>
+          <option value="dark">Oscuro</option>
+        </select>
+      </div>
+      <div class="filter-container">
+        <button id="export-btn" class="btn-warning">Exportar</button>
+        <button id="import-btn" class="btn-warning">Importar</button>
+        <button id="load-defaults-btn" class="btn-warning">Cargar Ejemplos</button>
+        <button id="clean-btn" class="btn-danger">Limpiar Huérfanos</button>
+      </div>
+
+      <!-- Contenedor para las dos listas -->
+      <div class="config-lists-container">
+        <div>
+          <h3>Carpetas <button id="add-folder-btn-config" class="btn-sm">[+]</button></h3>
+          <div id="folder-tree-config" class="folder-tree"></div>
+        </div>
+        <div>
+          <h3>Variantes <button id="add-variant-btn-config" class="btn-sm">[+]</button></h3>
+          <div id="variant-list-config" class="variant-list"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- El formulario ahora envuelve todo el contenido del modal de edición -->
+<form id="edit-modal" class="modal" style="display: none;">
+  <div class="modal-content-full">
+    <div class="modal-header">
+      <h4 class="modal-title" id="edit-modal-title">Editar</h4>
+      <button id="close-edit-modal">&times;</button>
+    </div>
+    <!-- El cuerpo del modal ahora contiene la estructura fija de todos los formularios -->
+    <div id="edit-modal-body" style="display: flex; flex-direction: column; flex: 1; min-height: 0;">
+      <input type="hidden" id="edit-item-id">
+      
+      <!-- Formulario de Prompt -->
+      <div id="prompt-form-fields" style="display: none; flex-direction: column; flex: 1; min-height: 0;">
+        <div class="form-group" style="margin-bottom: 8px;">
+          <div style="margin-bottom: 8px;">
+            <label for="prompt-title">Título</label>
+            <input type="text" id="prompt-title" required style="width: 100%;">
+          </div>
+          <div>
+            <label for="prompt-folder">Carpeta</label>
+            <select id="prompt-folder" style="width: 100%;">
+              <option value="">Sin carpeta</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group editor-container" style="flex: 1; min-height: 0; display: flex; flex-direction: column; overflow: hidden;">
+          <label for="quill-editor">Contenido</label>
+          <div id="quill-editor" style="flex: 1; min-height: 200px; position: relative; overflow: hidden; display: flex; flex-direction: column;"></div>
+        </div>
+        <div class="form-group" style="margin-top: 8px;">
+          <label>Variantes</label>
+          <div id="prompt-variants-container"></div>
+          <select id="add-variant-select" style="width: 100%;">
+            <option value="">Seleccionar variante...</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Formulario de Carpeta -->
+      <div id="folder-form-fields" style="display: none;">
+        <div class="form-group">
+          <label for="folder-name">Nombre</label>
+          <input type="text" id="folder-name" required>
+        </div>
+        <div class="form-group">
+          <label for="folder-parent">Carpeta Padre</label>
+          <select id="folder-parent">
+            <option value="">Ninguna</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Formulario de Variante -->
+      <div id="variant-form-fields" style="display: none;">
+        <div class="form-group">
+          <label for="variant-name">Nombre</label>
+          <input type="text" id="variant-name" required>
+        </div>
+        <div class="form-group">
+          <label for="variant-url">URL (opcional)</label>
+          <input type="url" id="variant-url">
+        </div>
+      </div>
+    </div>
+    <!-- Los botones de acción están dentro del formulario -->
+    <div class="form-actions">
+      <button type="button" id="delete-item-btn" class="btn-danger" style="display: none;">Eliminar</button>
+      <button type="button" id="copy-prompt-btn" style="display: none;">Copiar</button>
+      <button type="submit">Guardar</button>
+      <button type="button" id="cancel-edit-modal">Cancelar</button>
+    </div>
+  </div>
+</div>
+</form>
+<script src="marked.min.js"></script>
+<script src="quill.min.js"></script>
+<script src="turndown.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

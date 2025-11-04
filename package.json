@@ -1,0 +1,13 @@
+{
+  "name": "promptsync-web",
+  "version": "1.0.0",
+  "description": "Gestor de prompts para IA con interfaz web",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "dev": "python -m http.server 8000"
+  },
+  "keywords": ["prompts", "ai", "chatgpt", "claude", "gemini"],
+  "author": "",
+  "license": "MIT"
+}

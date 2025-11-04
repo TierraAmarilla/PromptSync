@@ -1,0 +1,576 @@
+/* style.css */
+:root {
+  --bg-main: #ffffff;
+  --bg-panel: #f3f3f3;
+  --bg-input: #e0e0e0;
+  --text: #333333;
+  --text-secondary: #666666;
+  --border: #cccccc;
+  --accent: #007acc;
+  --accent-hover: #005a99;
+  --success: #4caf50;
+  --danger: #f44336;
+  --warning: #ff9800;
+  --icon-size: 18px;
+}
+
+/* Variables de tema oscuro */
+.theme-dark:root {
+  --bg-main: #1e1e1e;
+  --bg-panel: #252526;
+  --bg-input: #3c3c3c;
+  --text: #d4d4d4;
+  --text-secondary: #a0a0a0;
+  --border: #454545;
+  --accent: #007acc;
+  --accent-hover: #005f99;
+  --success: #4caf50;
+  --danger: #f44336;
+  --warning: #ff9800;
+  --icon-size: 18px;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-main);
+  color: var(--text);
+  height: 100vh;
+  overflow: hidden;
+}
+
+#sidebar {
+  width: 100%; /* Ocupa todo el ancho disponible */
+  height: 100%; /* Ocupa todo el alto */
+  background-color: var(--bg-panel);
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.header button {
+  margin-left: 5px;
+  padding: 4px 8px;
+  font-size: 14px;
+}
+
+.filter-container {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+input, select, textarea {
+  width: 100%;
+  background-color: var(--bg-input);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 6px 8px;
+  border-radius: 3px;
+  font-size: 13px;
+  box-sizing: border-box;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+button {
+  background-color: var(--accent);
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+button:hover {
+  background-color: var(--accent-hover);
+}
+
+.btn-sm {
+  padding: 2px 4px;
+  font-size: 14px;
+  min-width: 18px;
+  height: 24px;
+  width: 24px;
+}
+
+.btn-icon {
+  /* Botones de icono cuadrados */
+  width: 24px; /* Ancho fijo */
+  min-width: 24px; /* Ancho mínimo para evitar que se encoja */
+  height: 24px; /* Alto fijo */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0; /* Sin padding interno */
+  margin: 0; /* Sin margen */
+  border: none; /* Sin borde */
+  background: none; /* Sin fondo */
+  color: var(--text); /* Color del texto/icono */
+  cursor: pointer;
+  font-size: var(--icon-size); /* Tamaño del icono */
+  border-radius: 3px; /* Opcional: bordes redondeados */
+}
+
+.btn-icon:hover {
+  background-color: var(--bg-input); /* Color de fondo al pasar el mouse */
+}
+
+.btn-danger {
+  background-color: var(--danger);
+}
+
+.btn-danger:hover {
+  background-color: #d32f2f;
+}
+
+.btn-warning {
+  background-color: var(--warning);
+}
+
+.btn-warning:hover {
+  background-color: #e68a00;
+}
+
+#load-defaults-btn {
+  background-color: var(--success);
+}
+
+#load-defaults-btn:hover {
+  background-color: #3d8b40;
+}
+
+h3 {
+  margin: 0 0 10px 0;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+h3 button {
+  margin-left: auto;
+  padding: 2px 6px ;
+  font-size: 11px ;
+  min-width: 20px ;
+  height: 20px ;
+  width: 20px ;
+}
+
+
+.folder-tree, .variant-list {
+  max-height: 150px;
+  overflow-y: auto;
+  margin-bottom: 15px;
+  padding: 5px;
+  background-color: var(--bg-input);
+  border-radius: 3px;
+}
+
+.folder-item, .variant-item {
+  padding: 4px 0;
+  cursor: pointer;
+  font-size: 13px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.variant-item .url-btn {
+  display: none;
+  margin-left: 5px;
+  padding: 2px 4px;
+  font-size: 11px;
+}
+
+.variant-item:hover .url-btn {
+  display: inline-block;
+}
+
+/* Comportamiento de resaltado unificado para todos los elementos de lista.
+   Fondo de acento y texto blanco para máxima legibilidad. */
+.prompt-item:hover,
+.folder-item:hover,
+.variant-item:hover {
+  background-color: var(--accent);
+  color: white;
+}
+
+.folder-item.indent-1 { padding-left: 15px; }
+.folder-item.indent-2 { padding-left: 30px; }
+.folder-item.indent-3 { padding-left: 45px; }
+.folder-item.indent-4 { padding-left: 60px; }
+
+.prompt-list {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.empty-list-message {
+  text-align: center;
+  padding: 20px;
+  color: var(--text-secondary);
+  font-style: italic;
+  font-size: 13px;
+}
+
+.prompt-item {
+  display: flex;
+  align-items: center;
+  background-color: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 0 5px; /* Espaciado horizontal */
+  height: 30px; /* Alto fijo */
+  color: var(--text); /* Asegura que el texto se adapte al tema */
+  font-size: 13px;
+}
+
+/* Ajuste para el nuevo orden de botones (sin inyectar) */
+.prompt-item .copy-btn {
+  margin-right: 5px; /* Espacio entre botón y título */
+}
+
+.prompt-item .title {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 8px;
+}
+
+/* Nuevo estilo para modales a pantalla completa */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content-full {
+  background-color: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 15px;
+  overflow: hidden;
+  max-height: 100vh; /* Asegurar que no exceda la altura de la ventana */
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  flex-shrink: 0; /* No se contrae */
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 16px;
+}
+
+.form-group {
+  margin-bottom: 10px;
+  flex-shrink: 0; /* No se contrae */
+  overflow: visible; /* Asegura que los elementos del form no se corten */
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 13px;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-group textarea {
+  min-height: 100px;
+  resize: vertical;
+  flex: 1; /* Se expande para ocupar el espacio disponible */
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 15px;
+  flex-shrink: 0; /* No se contrae */
+}
+
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: var(--success);
+  color: white;
+  padding: 10px 15px;
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  z-index: 1001;
+}
+
+.toast.error {
+  background-color: var(--danger);
+}
+
+.variant-tag {
+  display: inline-block;
+  /* El color de fondo y texto se aplican desde JS */
+  /* background-color: #3a3d3f; */
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 11px;
+  margin: 0 2px 2px 0;
+  cursor: pointer;
+}
+
+.variant-tag:hover {
+  /* Ligeramente más oscuro al pasar el ratón */
+  filter: brightness(90%);
+}
+
+.variant-tag::after {
+  content: ' ×';
+  margin-left: 4px;
+  font-weight: bold;
+  color: #FFFFFF; /* Asegura que la 'x' sea siempre blanca para contraste */
+}
+
+.variant-selector-row {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.variant-selector-row select {
+  flex: 1;
+}
+
+/* --- Estilos específicos para los modales --- */
+
+/* Modal de Configuración */
+/* Hacemos que el cuerpo del modal sea el área de scroll */
+#config-body {
+  flex: 1; /* Ocupa el espacio restante */
+  overflow-y: auto; /* Scroll vertical solo si es necesario */
+  padding-right: 5px; /* Espacio para la barra de scroll */
+}
+
+/* Contenedor para las listas de carpetas y variantes */
+.config-lists-container {
+  flex: 1; /* Ocupa el espacio restante */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow: hidden; /* Evita desbordamientos */
+}
+
+.config-lists-container > div {
+  flex: 1; /* Cada lista ocupa la mitad del espacio */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.config-lists-container .folder-tree, .config-lists-container .variant-list {
+  flex: 1; /* El área de scroll se expande */
+  overflow-y: auto;
+}
+
+/* Anulamos la altura máxima para que las listas se expandan dentro del modal */
+#config-modal .folder-tree, #config-modal .variant-list {
+  max-height: none;
+}
+
+/* Modal de Edición de Prompt */
+/* El cuerpo del formulario se expande */
+#edit-modal-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Cambiado a hidden para que solo el editor tenga scroll */
+  min-height: 0; /* Crítico para que flex y overflow funcionen correctamente */
+}
+
+/* El contenedor del editor debe ser flexible para ocupar el espacio */
+.editor-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* Clave para que el scroll funcione en un contenedor flex */
+}
+
+/* El contenedor que nosotros creamos para Quill debe expandirse */
+#quill-editor {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative; /* Necesario para que Quill posicione sus elementos internos */
+}
+
+/* --- Corrección para iconos de Quill en modo oscuro --- */
+.theme-dark .ql-toolbar .ql-stroke {
+  stroke: var(--text); /* Color del borde de los iconos */
+}
+
+.theme-dark .ql-toolbar .ql-fill {
+  fill: var(--text); /* Color del relleno de los iconos */
+}
+
+/* Corrección final para el layout de Quill dentro de un contenedor flex */
+.ql-container.ql-snow {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* --- Estilos para el contenido del editor Quill --- */
+/* Mejora la apariencia del contenido renderizado desde Markdown */
+
+.ql-editor {
+  line-height: 1.6; /* Mejora la legibilidad general */
+}
+
+.ql-editor h1, .ql-editor h2, .ql-editor h3 {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.3em;
+  margin-top: 24px;
+  margin-bottom: 16px;
+}
+
+.ql-editor h1 { font-size: 2em; }
+.ql-editor h2 { font-size: 1.5em; }
+.ql-editor h3 { font-size: 1.25em; }
+
+.ql-editor blockquote {
+  border-left: 4px solid var(--border);
+  padding-left: 1em;
+  color: var(--text-secondary);
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.ql-editor ul, .ql-editor ol {
+  padding-left: 2em;
+}
+
+.ql-editor code {
+  background-color: var(--bg-input);
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 85%;
+}
+
+/* --- Estilos para Vista Dividida (Split View) --- */
+.split-view-container {
+  display: flex;
+  gap: 15px;
+  height: 100%;
+  overflow: hidden;
+}
+
+.split-view-editor {
+  flex: 1; /* Ocupa el 50% del espacio */
+  display: flex;
+  flex-direction: column;
+}
+
+.split-view-preview {
+  flex: 1; /* Ocupa el otro 50% */
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+}
+
+/* --- Estilos para la previsualización de Markdown --- */
+.markdown-preview {
+  padding: 10px;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.markdown-preview h1, .markdown-preview h2, .markdown-preview h3 {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.3em;
+}
+
+.markdown-preview code {
+  background-color: var(--bg-input);
+  padding: 0.2em 0.4em;
+  margin: 0;
+  font-size: 85%;
+  border-radius: 3px;
+}
+
+.markdown-preview pre {
+  background-color: var(--bg-input);
+  padding: 10px;
+  border-radius: 3px;
+  overflow-x: auto;
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 768px) {
+  #sidebar {
+    padding: 5px;
+  }
+  
+  .modal-content-full {
+    padding: 10px;
+  }
+  
+  .prompt-item {
+    height: 40px;
+    padding: 0 8px;
+  }
+  
+  .btn-icon {
+    width: 32px;
+    height: 32px;
+  }
+  
+  input, select, textarea {
+    font-size: 16px; /* Evita zoom en iOS */
+  }
+}

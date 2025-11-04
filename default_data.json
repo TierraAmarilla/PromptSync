@@ -1,0 +1,219 @@
+{
+  "prompts": [
+    {
+      "id": "p_1",
+      "title": "Storytelling multicanal para producto",
+      "folderId": "f_1",
+      "general": "Diseña una campaña de storytelling original para lanzar un producto, alineando el mensaje a tres canales digitales e integrando valores de marca, sin clichés ni exageraciones.",
+      "variants": []
+    },
+    {
+      "id": "p_2",
+      "title": "Lección IA secundaria",
+      "folderId": "f_2",
+      "general": "Crea un plan de lección interactiva sobre inteligencia artificial para secundaria, con objetivos claros, explicación accesible, preguntas prácticas y actividades grupales.",
+      "variants": []
+    },
+    {
+      "id": "p_3",
+      "title": "Sistema de priorización semanal",
+      "folderId": "f_3",
+      "general": "Elabora un sistema de priorización semanal para equipos multidisciplinares, con criterios claros y plantillas reutilizables en formato compacto.",
+      "variants": []
+    },
+    {
+      "id": "p_4",
+      "title": "Flujo DevOps seguro en la nube",
+      "folderId": "f_4",
+      "general": "Describe un flujo DevOps automatizado para despliegue seguro en AWS y Azure, con integración continua, pruebas y checklist de seguridad.",
+      "variants": []
+    },
+    {
+      "id": "p_5",
+      "title": "Conceptos visuales IA y cultura local",
+      "folderId": "f_5",
+      "general": "Genera tres conceptos originales para campaña visual basada en IA y cultura local, explicando su conexión simbólica y viralidad.",
+      "variants": []
+    },
+    {
+      "id": "p_6",
+      "title": "Análisis tendencias automatización industrial",
+      "folderId": "f_6",
+      "general": "Elabora un análisis comparativo actual sobre tendencias de automatización en dos sectores industriales, utilizando datos y referencias actualizadas.",
+      "variants": []
+    },
+    {
+      "id": "p_7",
+      "title": "Crónica periodística con testimonios",
+      "folderId": "f_1",
+      "general": "Redacta una crónica periodística sobre un suceso reciente, con tres testimonios directos y contexto objetivo, sin juicios o suposiciones.",
+      "variants": []
+    },
+    {
+      "id": "p_8",
+      "title": "Gamificación matemáticas primaria",
+      "folderId": "f_2",
+      "general": "Diseña una actividad de gamificación presencial para repasar matemáticas en primaria, explicando reglas, materiales y evaluación.",
+      "variants": []
+    },
+    {
+      "id": "p_9",
+      "title": "Plan hábitos equipos remotos",
+      "folderId": "f_3",
+      "general": "Crea un plan detallado para promover hábitos de trabajo en equipos remotos, con rutinas, checkpoints y adaptación a husos horarios distintos.",
+      "variants": []
+    },
+    {
+      "id": "p_10",
+      "title": "Asistente virtual PLN y APIs",
+      "folderId": "f_4",
+      "general": "Describe cómo programar un asistente virtual personalizado con PLN y APIs externas abiertas, detallando arquitectura e integraciones clave.",
+      "variants": []
+    },
+    {
+      "id": "p_11",
+      "title": "Mecánica de juego para cooperación",
+      "folderId": "f_5",
+      "general": "Idea una mecánica de juego nueva para fomentar cooperación en equipos interdisciplinarios, detallando reglas y método de evaluación.",
+      "variants": []
+    },
+    {
+      "id": "p_12",
+      "title": "Evaluación de riesgos IA empresarial",
+      "folderId": "f_6",
+      "general": "Desarrolla una evaluación detallada de riesgos técnicos, éticos y legales en la adopción de IA empresarial, con ranking y controles según estándares internacionales.",
+      "variants": []
+    },
+    {
+      "id": "p_13",
+      "title": "Guía informes ejecutivos con checklist",
+      "folderId": "f_1",
+      "general": "Elabora una guía práctica de dos páginas para escribir informes ejecutivos, con estructura recomendada, ejemplos y checklist de revisión.",
+      "variants": []
+    },
+    {
+      "id": "p_14",
+      "title": "Simulación de debate ético tecnológico",
+      "folderId": "f_2",
+      "general": "Crea una simulación de debate sobre un dilema ético tecnológico, asignando roles y posturas equilibradas con guía de intervención.",
+      "variants": []
+    },
+    {
+      "id": "p_15",
+      "title": "Flujo Pomodoro-prioridades diario",
+      "folderId": "f_3",
+      "general": "Optimiza el flujo de trabajo diario integrando técnica Pomodoro y gestión de prioridades, con cronograma y registro de logros adaptables.",
+      "variants": []
+    }
+  ],
+  "folders": [
+    { "id": "f_1", "name": "Redacción", "parentId": null },
+    { "id": "f_2", "name": "Educación", "parentId": null },
+    { "id": "f_3", "name": "Productividad", "parentId": null },
+    { "id": "f_4", "name": "Desarrollo", "parentId": null },
+    { "id": "f_5", "name": "Creatividad", "parentId": null },
+    { "id": "f_6", "name": "Análisis", "parentId": null }
+  ],
+ "variants": [
+    {
+      "id": 1,
+      "name": "ChatGPT",
+      "url": "https://chat.openai.com"
+    },
+    {
+      "id": 2,
+      "name": "Gemini",
+      "url": "https://gemini.google.com"
+    },
+    {
+      "id": 3,
+      "name": "Claude",
+      "url": "https://claude.ai"
+    },
+    {
+      "id": 4,
+      "name": "Llama (Meta AI)",
+      "url": "https://www.meta.ai"
+    },
+    {
+      "id": 5,
+      "name": "DeepSeek",
+      "url": "https://chat.deepseek.com"
+    },
+    {
+      "id": 6,
+      "name": "Qwen",
+      "url": "https://qianwen.aliyun.com/chat"
+    },
+    {
+      "id": 7,
+      "name": "Kimi",
+      "url": "https://kimi.moonshot.cn"
+    },
+    {
+      "id": 8,
+      "name": "Mistral (Le Chat)",
+      "url": "https://chat.mistral.ai"
+    },
+    {
+      "id": 9,
+      "name": "Grok",
+      "url": "https://grok.x.ai"
+    },
+    {
+      "id": 10,
+      "name": "Perplexity",
+      "url": "https://www.perplexity.ai"
+    },
+    {
+      "id": 11,
+      "name": "Pollinations",
+      "url": "https://pollinations.ai"
+    },
+    {
+      "id": 12,
+      "name": "Microsoft Copilot",
+      "url": "https://copilot.microsoft.com"
+    },
+    {
+      "id": 13,
+      "name": "Poe",
+      "url": "https://poe.com"
+    },
+    {
+      "id": 14,
+      "name": "HuggingChat",
+      "url": "https://huggingface.co/chat"
+    },
+    {
+      "id": 15,
+      "name": "Pi",
+      "url": "https://pi.ai"
+    },
+    {
+      "id": 16,
+      "name": "Character.AI",
+      "url": "https://character.ai"
+    },
+    {
+      "id": 17,
+      "name": "YouChat",
+      "url": "https://you.com/search"
+    },
+    {
+      "id": 18,
+      "name": "CoHere",
+      "url": "https://dashboard.cohere.com/playground"
+    },
+    {
+      "id": 19,
+      "name": "NovelAI",
+      "url": "https://novelai.net"
+    },
+    {
+      "id": 20,
+      "name": "DreamStudio (SD)",
+      "url": "https://dreamstudio.ai"
+    }
+  ]
+}
