@@ -740,6 +740,7 @@ async function openPromptModal(id = null, initialContent = null) {
     debugLog('Paso 5: Mostrando modal');
     document.getElementById('delete-item-btn').style.display = isEdit ? 'inline-block' : 'none';
     document.getElementById('copy-prompt-btn').style.display = 'inline-block';
+    document.getElementById('edit-variables-btn').style.display = 'inline-block';
     document.getElementById('edit-modal').style.display = 'flex';
     debugLog('Modal mostrado, display:', document.getElementById('edit-modal').style.display);
     debugLog('=== FIN openPromptModal ===');
@@ -1201,6 +1202,26 @@ document.getElementById('edit-modal').addEventListener('submit', (e) => {
 
 document.getElementById('delete-item-btn').addEventListener('click', deleteCurrentItem);
 document.getElementById('copy-prompt-btn').addEventListener('click', copyPromptFromEditor);
+document.getElementById('edit-variables-btn').addEventListener('click', () => {
+  if (!quillInstance) {
+    showToast('Error: Editor no disponible', true);
+    return;
+  }
+  // Obtener contenido del editor Quill como texto plano
+  const htmlContent = quillInstance.root.innerHTML;
+  const textContent = quillInstance.getText();
+  
+  // Transferir al editor de variables
+  document.getElementById('variable-base-prompt').value = textContent;
+  
+  // Cerrar modal actual y abrir editor de variables
+  document.getElementById('edit-modal').style.display = 'none';
+  openVariableEditor();
+  
+  // Inicializar con el contenido transferido
+  const vars = parseVariableEditorVariables(textContent);
+  renderVariableForm(vars);
+});
 
 // --- Inicialización ---
 async function init() {
@@ -1372,6 +1393,207 @@ document.addEventListener('DOMContentLoaded', async () => {
       console.error("Error durante la recuperación de emergencia:", renderError);
     }
   }
+});
+
+// --- Editor PFM ---
+let currentPFM = null;
+const pfmFileInput = document.getElementById('pfm-file-input');
+
+function openVariableEditor() {
+  document.getElementById('variable-editor-modal').style.display = 'flex';
+  // Si hay contenido en el editor Quill, intentar convertirlo a PFM básico
+  if (quillInstance) {
+    const content = quillInstance.getText().trim();
+    if (content) {
+      document.getElementById('pfm-template-area').value = content;
+    }
+  }
+}
+
+function validatePFM(data) {
+  const errors = [];
+  if (!data.manifest_version || data.manifest_version !== "1.0") errors.push("manifest_version debe ser '1.0'");
+  if (!data.type || !["image_prompt", "text_prompt", "video_prompt"].includes(data.type)) errors.push("type inválido");
+  if (!data.name || typeof data.name !== 'string') errors.push("name requerido");
+  if (!data.language || typeof data.language !== 'string') errors.push("language requerido");
+  if (!data.template || typeof data.template !== 'string') errors.push("template requerido");
+  if (!data.variables || typeof data.variables !== 'object') errors.push("variables requerido");
+  return errors;
+}
+
+function loadPFM(data) {
+  const errors = validatePFM(data);
+  if (errors.length > 0) {
+    showToast('Errores en PFM: ' + errors.join(', '), true);
+    return;
+  }
+  
+  currentPFM = data;
+  document.getElementById('pfm-prompt-name').textContent = data.name;
+  document.getElementById('pfm-prompt-type').textContent = data.type;
+  document.getElementById('pfm-prompt-lang').textContent = data.language;
+  document.getElementById('pfm-prompt-info').style.display = 'block';
+  document.getElementById('pfm-template-area').value = data.template;
+  
+  renderPFMVariableForm(data.variables);
+  
+  if (data.negative_prompt) {
+    document.getElementById('pfm-negative-text').textContent = data.negative_prompt;
+    document.getElementById('pfm-negative-prompt').style.display = 'block';
+    document.getElementById('pfm-copy-neg-btn').style.display = 'inline-block';
+    document.getElementById('pfm-copy-both-btn').style.display = 'inline-block';
+  } else {
+    document.getElementById('pfm-negative-prompt').style.display = 'none';
+    document.getElementById('pfm-copy-neg-btn').style.display = 'none';
+    document.getElementById('pfm-copy-both-btn').style.display = 'none';
+  }
+}
+
+function renderPFMVariableForm(variables) {
+  const container = document.getElementById('pfm-form-container');
+  container.innerHTML = '';
+  
+  if (Object.keys(variables).length === 0) {
+    container.innerHTML = '<p>No hay variables configurables.</p>';
+    return;
+  }
+  
+  Object.entries(variables).forEach(([key, variable]) => {
+    const formGroup = document.createElement('div');
+    formGroup.className = 'form-group';
+    
+    const label = document.createElement('label');
+    label.textContent = variable.label;
+    label.htmlFor = `pfm-var-${key}`;
+    
+    let inputEl;
+    if (variable.type === 'boolean') {
+      inputEl = document.createElement('select');
+      inputEl.innerHTML = '<option value="true">Sí</option><option value="false">No</option>';
+      inputEl.value = variable.default ? 'true' : 'false';
+    } else if (variable.type === 'select') {
+      inputEl = document.createElement('select');
+      variable.options.forEach(option => {
+        const opt = document.createElement('option');
+        opt.value = option;
+        opt.textContent = option;
+        if (option === variable.default) opt.selected = true;
+        inputEl.appendChild(opt);
+      });
+    } else if (variable.type === 'number') {
+      inputEl = document.createElement('input');
+      inputEl.type = 'number';
+      inputEl.value = variable.default || 0;
+    } else {
+      inputEl = document.createElement('input');
+      inputEl.type = 'text';
+      inputEl.value = variable.default || '';
+    }
+    
+    inputEl.id = `pfm-var-${key}`;
+    inputEl.dataset.varKey = key;
+    
+    formGroup.appendChild(label);
+    formGroup.appendChild(inputEl);
+    container.appendChild(formGroup);
+  });
+}
+
+function generatePFMFinalPrompt() {
+  if (!currentPFM) {
+    showToast('Primero carga un archivo PFM', true);
+    return;
+  }
+  
+  let finalPrompt = document.getElementById('pfm-template-area').value || currentPFM.template;
+  
+  Object.keys(currentPFM.variables).forEach(key => {
+    const input = document.getElementById(`pfm-var-${key}`);
+    if (input) {
+      let value = input.value;
+      if (currentPFM.variables[key].type === 'boolean') {
+        value = value === 'true' ? 'sí' : 'no';
+      }
+      finalPrompt = finalPrompt.replace(new RegExp(`\\{\\{${key}\\}\\}`, 'g'), value);
+    }
+  });
+  
+  return finalPrompt;
+}
+
+// Event Listeners para Editor PFM
+document.getElementById('variable-editor-btn').addEventListener('click', openVariableEditor);
+document.getElementById('close-variable-modal').addEventListener('click', () => {
+  document.getElementById('variable-editor-modal').style.display = 'none';
+});
+
+document.getElementById('pfm-load-btn').addEventListener('click', () => pfmFileInput.click());
+
+pfmFileInput.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const data = JSON.parse(e.target.result);
+      loadPFM(data);
+    } catch (error) {
+      showToast('Error al leer JSON: ' + error.message, true);
+    }
+  };
+  reader.readAsText(file);
+});
+
+document.getElementById('pfm-paste-btn').addEventListener('click', async () => {
+  try {
+    const text = await navigator.clipboard.readText();
+    const data = JSON.parse(text);
+    loadPFM(data);
+  } catch (error) {
+    showToast('Error al pegar JSON: ' + error.message, true);
+  }
+});
+
+document.querySelectorAll('.variable-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const targetTab = tab.dataset.tab;
+    document.querySelectorAll('.variable-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.variable-tab-content').forEach(tc => tc.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(`pfm-${targetTab}-tab`).classList.add('active');
+  });
+});
+
+document.getElementById('pfm-generate-btn').addEventListener('click', () => {
+  const final = generatePFMFinalPrompt();
+  if (final) {
+    document.getElementById('pfm-output').value = final;
+    document.querySelectorAll('.variable-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.variable-tab-content').forEach(tc => tc.classList.remove('active'));
+    document.querySelector('[data-tab="final"]').classList.add('active');
+    document.getElementById('pfm-final-tab').classList.add('active');
+  }
+});
+
+document.getElementById('pfm-copy-btn').addEventListener('click', () => {
+  navigator.clipboard.writeText(document.getElementById('pfm-output').value).then(() => {
+    showToast('Prompt copiado al portapapeles');
+  });
+});
+
+document.getElementById('pfm-copy-neg-btn').addEventListener('click', () => {
+  navigator.clipboard.writeText(document.getElementById('pfm-negative-text').textContent).then(() => {
+    showToast('Prompt negativo copiado');
+  });
+});
+
+document.getElementById('pfm-copy-both-btn').addEventListener('click', () => {
+  const positive = document.getElementById('pfm-output').value.trim();
+  const negative = document.getElementById('pfm-negative-text').textContent.trim();
+  const combined = `${positive}.\n\nEvitar absolutamente: ${negative}`;
+  navigator.clipboard.writeText(combined).then(() => {
+    showToast('Ambos prompts copiados');
+  });
 });
 
 // --- Escuchar cambios en la preferencia del sistema para el tema ---

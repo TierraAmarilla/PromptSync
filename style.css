@@ -550,6 +550,145 @@ h3 button {
   overflow-x: auto;
 }
 
+/* --- Estilos Editor PFM --- */
+.variable-editor-container {
+  display: flex;
+  height: 100%;
+  gap: 20px;
+  flex: 1;
+  min-height: 0;
+}
+
+.variable-left-panel {
+  flex: 0 0 auto;
+  min-width: 300px;
+  max-width: 400px;
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  padding-right: 10px;
+}
+
+.variable-left-panel-header {
+  flex-shrink: 0;
+}
+
+.variable-left-panel-content {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.variable-right-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.variable-button-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.variable-tabs {
+  display: flex;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 10px;
+}
+
+.variable-tab {
+  padding: 10px 20px;
+  background: var(--bg-input);
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  border-radius: 3px 3px 0 0;
+  margin-right: 2px;
+  color: var(--text);
+}
+
+.variable-tab.active {
+  background: var(--accent);
+  color: white;
+}
+
+.variable-tab-content {
+  flex: 1;
+  display: none;
+  flex-direction: column;
+}
+
+.variable-tab-content.active {
+  display: flex;
+}
+
+.variable-output {
+  flex: 1;
+  padding: 10px;
+  background: var(--bg-main);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  font-family: monospace;
+  font-size: 13px;
+  overflow: auto;
+  margin-bottom: 10px;
+  color: var(--text);
+  resize: none;
+  white-space: nowrap;
+}
+
+#pfm-template-area {
+  flex: 1;
+  font-family: monospace;
+  font-size: 13px;
+  resize: none;
+  overflow: auto;
+  white-space: nowrap;
+}
+
+.pfm-prompt-info {
+  background: #e3f2fd;
+  padding: 10px;
+  border-radius: 3px;
+  margin-bottom: 15px;
+  font-size: 12px;
+}
+
+.theme-dark .pfm-prompt-info {
+  background: #1a237e;
+  color: #e3f2fd;
+}
+
+.pfm-negative-prompt {
+  background: #fff3e0;
+  padding: 10px;
+  border-radius: 3px;
+  margin-bottom: 10px;
+  font-size: 12px;
+}
+
+.theme-dark .pfm-negative-prompt {
+  background: #e65100;
+  color: #fff3e0;
+}
+
+.pfm-negative-prompt strong {
+  color: #e65100;
+}
+
+.theme-dark .pfm-negative-prompt strong {
+  color: #fff3e0;
+}
+
+.btn-secondary {
+  background-color: var(--text-secondary);
+}
+
+.btn-secondary:hover {
+  background-color: #545b62;
+}
+
 /* --- Responsive Design --- */
 @media (max-width: 768px) {
   #sidebar {
@@ -572,5 +711,14 @@ h3 button {
   
   input, select, textarea {
     font-size: 16px; /* Evita zoom en iOS */
+  }
+  
+  .variable-editor-container {
+    flex-direction: column;
+  }
+  
+  .variable-left-panel {
+    max-width: none;
+    min-width: auto;
   }
 }

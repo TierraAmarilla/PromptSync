@@ -214,6 +214,11 @@
       "id": 20,
       "name": "DreamStudio (SD)",
       "url": "https://dreamstudio.ai"
+    },
+    {
+      "id": 21,
+      "name": "PFM (Editor Variables)",
+      "url": null
     }
   ]
 }

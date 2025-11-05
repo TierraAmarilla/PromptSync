@@ -62,6 +62,7 @@
         <button id="export-btn" class="btn-warning">Exportar</button>
         <button id="import-btn" class="btn-warning">Importar</button>
         <button id="load-defaults-btn" class="btn-warning">Cargar Ejemplos</button>
+        <button id="variable-editor-btn" class="btn-warning">Editor Variables</button>
         <button id="clean-btn" class="btn-danger">Limpiar Huérfanos</button>
       </div>
 
@@ -148,12 +149,69 @@
     <div class="form-actions">
       <button type="button" id="delete-item-btn" class="btn-danger" style="display: none;">Eliminar</button>
       <button type="button" id="copy-prompt-btn" style="display: none;">Copiar</button>
+      <button type="button" id="edit-variables-btn" style="display: none;">🔧 Editar Variables</button>
       <button type="submit">Guardar</button>
       <button type="button" id="cancel-edit-modal">Cancelar</button>
     </div>
   </div>
 </div>
 </form>
+
+<!-- Modal Editor PFM -->
+<div id="variable-editor-modal" class="modal" style="display: none;">
+  <div class="modal-content-full">
+    <div class="modal-header">
+      <h4 class="modal-title">📜 Editor PFM</h4>
+      <button id="close-variable-modal">&times;</button>
+    </div>
+    <div class="variable-editor-container">
+      <!-- Panel Izquierdo: Variables y Controles -->
+      <div class="variable-left-panel">
+        <div class="variable-left-panel-header">
+          <div class="variable-button-group">
+            <button class="btn btn-secondary" id="pfm-load-btn">📁 Cargar PFM</button>
+            <button class="btn btn-secondary" id="pfm-paste-btn">📋 Pegar JSON</button>
+            <button class="btn btn-warning" id="pfm-generate-btn">🚀 Generar</button>
+          </div>
+          <div id="pfm-prompt-info" class="pfm-prompt-info" style="display: none;">
+            <strong id="pfm-prompt-name"></strong><br>
+            <span id="pfm-prompt-type"></span> | <span id="pfm-prompt-lang"></span>
+          </div>
+        </div>
+        <div class="variable-left-panel-content">
+          <div id="pfm-form-container">
+            <p>Carga un archivo JSON con formato PFM v1.0 o pega contenido desde el editor.</p>
+          </div>
+        </div>
+      </div>
+      <!-- Panel Derecho: Pestañas -->
+      <div class="variable-right-panel">
+        <div class="variable-tabs">
+          <button class="variable-tab active" data-tab="template">Template</button>
+          <button class="variable-tab" data-tab="final">Prompt Final</button>
+        </div>
+        <div class="variable-tab-content active" id="pfm-template-tab">
+          <textarea id="pfm-template-area" placeholder="Edita el template aquí..."></textarea>
+        </div>
+        <div class="variable-tab-content" id="pfm-final-tab">
+          <textarea class="variable-output" id="pfm-output" placeholder="El prompt final aparecerá aquí..."></textarea>
+          <div id="pfm-negative-prompt" class="pfm-negative-prompt" style="display: none;">
+            <strong>Prompt Negativo:</strong><br>
+            <span id="pfm-negative-text"></span>
+          </div>
+          <div class="variable-button-group">
+            <button class="btn" id="pfm-copy-btn">📋 Copiar Prompt</button>
+            <button class="btn" id="pfm-copy-neg-btn" style="display: none;">📋 Copiar Negativo</button>
+            <button class="btn" id="pfm-copy-both-btn" style="display: none;">📋 Copiar Ambos</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="pfm-file-input" accept=".json" style="display: none;">
+
 <script src="marked.min.js"></script>
 <script src="quill.min.js"></script>
 <script src="turndown.js"></script>
